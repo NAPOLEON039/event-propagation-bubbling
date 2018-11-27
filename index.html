@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after { 
+    box-sizing: inherit; 
+  }
+
+  div {
+    width: 100%;
+    padding: 100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background: mistyrose;
+  }
+
+  .three {
+    background: coral;
+  }
+</style>
+
+<button></button>
+<script>
+const divs = document.querySelectorAll('div');
+
+function logText(e) {
+  console.log(this.classList.value);
+  e.stopPropagation(); //prevents bubbling and capturing
+}
+
+//this results in bubbling which means all three divs fire events from the bottom-up (innermost element first)
+// divs.forEach(div => div.addEventListener('click', logText));
+
+//this will turn on capture mode instead of bubbling. In simple words, the opposite of the above (firing events in top-bottom form)
+// divs.forEach(div => div.addEventListener('click', logText, { capture: true }));
+
+//this will turn off capture (which is the default)
+divs.forEach(div => div.addEventListener('click', logText, { capture: false }));
+
+//removes or unbinds the event from the element after firing it once. Useful if for example we want a sign-up or buy button to only be clicked once.
+// divs.forEach(div => div.addEventListener('click', logText, { once: true }));
+
+</script>
+</body>
+</html>
